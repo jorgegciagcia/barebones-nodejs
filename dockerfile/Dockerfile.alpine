@@ -1,0 +1,2 @@
+FROM alpine:latest
+RUN apk update && apk add libcrypto3=3.1.4-r6 && apk add libssl3=3.1.4-r6
