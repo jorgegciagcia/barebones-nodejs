@@ -1,11 +1,6 @@
-
-
-
 # TALLERES DEVSECOPS
-    
 
 ## CONTENEDORES
-
 
 ### SONARQUBE
 
@@ -16,9 +11,9 @@ docker run -d --name=sonarqube \
     -v sonarqube_extensions:/opt/sonarqube/extensions \
     sonarqube:lts-community
 ```
+
 ### TRIVY
 
 ```bash
 docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/trivycache:/root/.cache/ aquasec/trivy image apline:3.19.1
 ```
-
