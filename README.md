@@ -5,11 +5,7 @@
 ### SONARQUBE
 
 ```bash
-docker run -d --name=sonarqube \
-    -d \
-    -p 9000:9000 \
-    -v sonarqube_extensions:/opt/sonarqube/extensions \
-    sonarqube:lts-community
+docker run -d --name=sonarqube -d -p 9000:9000 sonarqube:lts-community
 ```
 
 ### TRIVY
