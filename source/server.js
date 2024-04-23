@@ -74,10 +74,6 @@ app.get('/get-user-data', (req, res) => {
         return res.status(400).send('Nombre de usuario no válido.');
 
     }
-    /*
-    const query = 'SELECT * FROM users WHERE username = ?';
-    db.all(query, [username], (err, rows) => {
-    */
     db.query(`SELECT * FROM users WHERE username = '${  username  }'`, (err, rows) => {
         if (err) {
             res.status(500).send('Error de base de datos.');

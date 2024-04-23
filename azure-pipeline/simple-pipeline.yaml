@@ -1,0 +1,50 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '12.x'
+  displayName: 'Install Node.js'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: |
+      **/server.js
+      **/package.json
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Copy server.js and package.json'
+
+- script: |
+    cd $(Build.ArtifactStagingDirectory)
+    ls -la
+    npm install
+  displayName: 'Install dependencies'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
+    replaceExistingArchive: true
+  displayName: 'Archive Node.js App'
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    packageForLinux: '$(Build.ArtifactStagingDirectory)/app.zip'
+    azureSubscription: '511fd090-8b8e-4900-a72c-2623b7e54b9b'
+    appType: 'webAppLinux'
+    WebAppName: 'app-talleres-jgg'
+    deployToSlotOrASE: true
+    ResourceGroupName: 'talleres'
+    StartupCommand: 'npm install && node server.js'
+    WebConfigParameters: '-Handler iisnode -NodeStartFile server.js -appType node'
+    AppSettings: '-WEBSITE_NODE_DEFAULT_VERSION 6.9.1'
+  displayName: 'Deploy Azure App Service'
